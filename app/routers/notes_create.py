@@ -1,15 +1,14 @@
-"""Note creation route: ``POST /notes``.
+"""Note creation route: ``POST /notes``."""
 
-The handler body is an inert stub owned by the note-creation ticket.
-"""
-
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, status
 
 from app.schemas import Note, NoteCreate
+from app.store import store
 
 router = APIRouter()
 
 
 @router.post("/notes", response_model=Note, status_code=status.HTTP_201_CREATED)
 async def create_note(payload: NoteCreate) -> Note:
-    raise HTTPException(status_code=501, detail="Not implemented")
+    """Create a note from a validated payload and return the stored note."""
+    return store.create(titel=payload.titel, inhalt=payload.inhalt, tags=payload.tags)
